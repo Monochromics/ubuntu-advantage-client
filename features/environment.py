@@ -637,7 +637,6 @@ def create_instance_with_uat_installed(
     series: str,
     name: str,
     custom_user_data: Optional[str] = None,
-    cloud_init_ppa: Optional[str] = None,
 ) -> pycloudlib.instance.BaseInstance:
     """Create a given series lxd image with ubuntu-advantage-tools installed
 
@@ -654,8 +653,6 @@ def create_instance_with_uat_installed(
        A string representing the instance name
     :param custom_user_data:
        A string representing custom userdata to be added to the instance
-    :param cloud_init_ppa:
-        Cloud-init's ppa to upgrade with
 
     :return: A pycloudlib Instance
     """
@@ -677,10 +674,7 @@ def create_instance_with_uat_installed(
         "--- Launching VM to create a base image with ubuntu-advantage"
     )
     inst = context.config.cloud_manager.launch(
-        instance_name=name,
-        series=series,
-        user_data=user_data,
-        cloud_init_ppa=cloud_init_ppa,
+        instance_name=name, series=series, user_data=user_data
     )
     instance_id = context.config.cloud_manager.get_instance_id(inst)
 
