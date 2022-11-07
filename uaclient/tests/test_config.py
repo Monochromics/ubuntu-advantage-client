@@ -19,9 +19,12 @@ from uaclient.config import (
     get_config_path,
     parse_config,
 )
+from uaclient.conftest import FakeNotice
 from uaclient.defaults import DEFAULT_CONFIG_FILE
 from uaclient.entitlements import valid_services
 from uaclient.entitlements.entitlement_status import ApplicationStatus
+from uaclient.files import notices
+from uaclient.files.notices import Notices
 from uaclient.util import depth_first_merge_overlay_dict
 
 KNOWN_DATA_PATHS = (
@@ -72,62 +75,110 @@ class TestNotices:
         "notices,expected",
         (
             ([], []),
-            ([["a", "a1"]], [["a", "a1"]]),
-            ([["a", "a1"], ["a", "a1"]], [["a", "a1"]]),
+            (
+                [[FakeNotice.a2, "a1"]],
+                [[FakeNotice.a2.value.label, "a1"]],
+            ),
+            (
+                [
+                    [FakeNotice.a, "a1"],
+                    [FakeNotice.a2, "a2"],
+                ],
+                [
+                    [FakeNotice.a.label, "a1"],
+                    [FakeNotice.a2.value.label, "a2"],
+                ],
+            ),
+            (
+                [
+                    [FakeNotice.a, "a1"],
+                    [FakeNotice.a, "a1"],
+                ],
+                [
+                    [FakeNotice.a.value.label, "a1"],
+                ],
+            ),
         ),
     )
     def test_add_notice_avoids_duplicates(
-        self, notices, expected, tmpdir, FakeConfig
+        self,
+        notices,
+        expected,
     ):
-        cfg = FakeConfig()
-        assert None is cfg.notice_file.read()
-        for notice in notices:
-            cfg.notice_file.add(*notice)
+        notice = Notices()
+        assert [] == notice.read()
+        for notice_ in notices:
+            notice.add(True, *notice_)
         if notices:
-            assert expected == cfg.notice_file.read()
+            assert expected == notice.read()
         else:
-            assert None is cfg.notice_file.read()
+            assert [] == notice.read()
 
     @pytest.mark.parametrize(
-        "notices,expected",
+        "_notices",
         (
-            ([], []),
-            ([["a", "a1"]], [["a", "a1"]]),
-            ([["a", "a1"], ["a", "a1"]], [["a", "a1"]]),
+            ([]),
+            ([[FakeNotice.a]]),
+            (
+                [
+                    [FakeNotice.a],
+                    [FakeNotice.a2],
+                ]
+            ),
         ),
     )
     def test_add_notice_fails_as_nonroot(
-        self, notices, expected, tmpdir, FakeConfig
+        self,
+        _notices,
     ):
-        cfg = FakeConfig(root_mode=False)
-        assert None is cfg.notice_file.read()
-        for notice in notices:
-            with pytest.raises(exceptions.NonRootUserError):
-                cfg.notice_file.add(*notice)
-        assert None is cfg.notice_file.read()
+        assert [] == notices.list()
+        for notice_ in _notices:
+            notices.add(False, *notice_)
+        assert [] == notices.list()
 
     @pytest.mark.parametrize(
-        "notices,removes,expected",
+        "notices_,removes,expected",
         (
-            ([], [["a", "a1"]], None),
-            ([["a", "a1"]], [["a", "a1"]], None),
-            ([["a", "a1"], ["a", "a2"]], [["a", "a1"]], [["a", "a2"]]),
+            ([], [FakeNotice.a], []),
             (
-                [["a", "a1"], ["a", "a2"], ["b", "b2"]],
-                [["a", ".*"]],
-                [["b", "b2"]],
+                [[FakeNotice.a2]],
+                [FakeNotice.a2],
+                [],
+            ),
+            (
+                [
+                    [FakeNotice.a],
+                    [FakeNotice.a2],
+                ],
+                [FakeNotice.a],
+                [[FakeNotice.a2.value.label, "notice_a2"]],
+            ),
+            (
+                [
+                    [FakeNotice.a],
+                    [FakeNotice.a2],
+                    [FakeNotice.b],
+                ],
+                [
+                    FakeNotice.a,
+                    FakeNotice.a2,
+                ],
+                [[FakeNotice.b.value.label, "notice_b"]],
             ),
         ),
     )
     def test_remove_notice_removes_matching(
-        self, notices, removes, expected, tmpdir, FakeConfig
+        self,
+        notices_,
+        removes,
+        expected,
     ):
-        cfg = FakeConfig()
-        for notice in notices:
-            cfg.notice_file.add(*notice)
-        for label, descr in removes:
-            cfg.notice_file.remove(label, descr)
-        assert expected == cfg.notice_file.read()
+
+        for notice_ in notices_:
+            notices.add(True, *notice_)
+        for label in removes:
+            notices.remove(True, label)
+        assert expected == notices.list()
 
 
 class TestEntitlements:

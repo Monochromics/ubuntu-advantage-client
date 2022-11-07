@@ -117,7 +117,7 @@ Feature: Command behaviour when auto-attached in an ubuntu PRO fips image
         And stdout matches regexp:
         """
         NOTICES
-        FIPS support requires system reboot to complete configuration.
+        fips_system_reboot_required: FIPS support requires system reboot to complete configuration.
         """
         When I reboot the machine
         And I run `uname -r` as non-root
@@ -139,7 +139,7 @@ Feature: Command behaviour when auto-attached in an ubuntu PRO fips image
         Then stdout does not match regexp:
         """
         NOTICES
-        FIPS support requires system reboot to complete configuration.
+        fips_system_reboot_required: FIPS support requires system reboot to complete configuration.
         """
 
         Examples: ubuntu release
@@ -333,7 +333,7 @@ Feature: Command behaviour when auto-attached in an ubuntu PRO fips image
         And stdout matches regexp:
         """
         NOTICES
-        FIPS support requires system reboot to complete configuration.
+        fips_system_reboot_required: FIPS support requires system reboot to complete configuration.
         """
         When I reboot the machine
         And I run `uname -r` as non-root
@@ -355,7 +355,7 @@ Feature: Command behaviour when auto-attached in an ubuntu PRO fips image
         Then stdout does not match regexp:
         """
         NOTICES
-        FIPS support requires system reboot to complete configuration.
+        fips_system_reboot_required: FIPS support requires system reboot to complete configuration.
         """
 
         Examples: ubuntu release
@@ -602,7 +602,7 @@ Feature: Command behaviour when auto-attached in an ubuntu PRO fips image
         And stdout matches regexp:
         """
         NOTICES
-        FIPS support requires system reboot to complete configuration.
+        fips_system_reboot_required: FIPS support requires system reboot to complete configuration.
         """
         When I reboot the machine
         And I run `uname -r` as non-root
@@ -624,7 +624,7 @@ Feature: Command behaviour when auto-attached in an ubuntu PRO fips image
         Then stdout does not match regexp:
         """
         NOTICES
-        FIPS support requires system reboot to complete configuration.
+        fips_system_reboot_required: FIPS support requires system reboot to complete configuration.
         """
 
         Examples: ubuntu release

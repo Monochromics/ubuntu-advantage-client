@@ -43,7 +43,7 @@ Feature: auto-attach retries periodically on failures
         Then stdout matches regexp:
         """
         NOTICES
-        Failed to automatically attach to Ubuntu Pro services 1 time\(s\).
+        auto_attach_retry_full_notice: Failed to automatically attach to Ubuntu Pro services 1 time\(s\).
         The failure was due to: Canonical servers did not recognize this machine as Ubuntu Pro: ".*".
         The next attempt is scheduled for \d+-\d+-\d+T\d+:\d+:00.*.
         You can try manually with `sudo ua auto-attach`.
@@ -78,7 +78,7 @@ Feature: auto-attach retries periodically on failures
         Then stdout matches regexp:
         """
         NOTICES
-        Failed to automatically attach to Ubuntu Pro services 11 time\(s\).
+        auto_attach_retry_full_notice: Failed to automatically attach to Ubuntu Pro services 11 time\(s\).
         The failure was due to: an unknown error.
         The next attempt is scheduled for \d+-\d+-\d+T\d+:\d+:00.*.
         You can try manually with `sudo ua auto-attach`.
@@ -112,7 +112,7 @@ Feature: auto-attach retries periodically on failures
         Then stdout matches regexp:
         """
         NOTICES
-        Failed to automatically attach to Ubuntu Pro services 19 times.
+        auto_attach_total_failure: Failed to automatically attach to Ubuntu Pro services 19 times.
         The most recent failure was due to: an unknown error.
         Try re-launching the instance or report this issue by running `ubuntu-bug ubuntu-advantage-tools`
         You can try manually with `sudo ua auto-attach`.
@@ -176,7 +176,7 @@ Feature: auto-attach retries periodically on failures
         Then stdout matches regexp:
         """
         NOTICES
-        Failed to automatically attach to Ubuntu Pro services
+        auto_attach_retry_full_notice: Failed to automatically attach to Ubuntu Pro services
         """
         When I append the following on uaclient config:
         """
@@ -199,7 +199,7 @@ Feature: auto-attach retries periodically on failures
         Then stdout does not match regexp:
         """
         NOTICES
-        Failed to automatically attach to Ubuntu Pro services
+        auto_attach_retry_full_notice: Failed to automatically attach to Ubuntu Pro services
         """
         Examples: ubuntu release
            | release |
@@ -265,7 +265,7 @@ Feature: auto-attach retries periodically on failures
         Then stdout matches regexp:
         """
         NOTICES
-        Failed to automatically attach to Ubuntu Pro services
+        auto_attach_retry_full_notice: Failed to automatically attach to Ubuntu Pro services
         """
         Examples: ubuntu release
            | release |
@@ -328,7 +328,7 @@ Feature: auto-attach retries periodically on failures
         Then stdout matches regexp:
         """
         NOTICES
-        Failed to automatically attach to Ubuntu Pro services
+        auto_attach_retry_full_notice: Failed to automatically attach to Ubuntu Pro services
         """
         When I append the following on uaclient config:
         """
@@ -354,7 +354,7 @@ Feature: auto-attach retries periodically on failures
         Then stdout does not match regexp:
         """
         NOTICES
-        Failed to automatically attach to Ubuntu Pro services
+        auto_attach_retry_full_notice: Failed to automatically attach to Ubuntu Pro services
         """
         Examples: ubuntu release
            | release |

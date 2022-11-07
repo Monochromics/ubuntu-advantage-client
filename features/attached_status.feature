@@ -28,7 +28,7 @@ Feature: Attached status
         Then stdout matches regexp:
         """
         NOTICES
-        Operation in progress: pro enable
+        operation_in_progress: Operation in progress: pro enable
         """
         When I run `pro status --wait` as non-root
         When I run `pro disable cis --assume-yes` with sudo
@@ -46,7 +46,7 @@ Feature: Attached status
         Then stdout does not match regexp:
         """
         NOTICES
-        Operation in progress: pro enable
+        operation_in_progress: Operation in progress: pro enable
         """
         When I run `pro disable cis --assume-yes` with sudo
         When I run `apt-get install jq -y` with sudo

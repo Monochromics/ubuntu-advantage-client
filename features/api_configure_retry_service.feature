@@ -46,7 +46,7 @@ Feature: api.u.pro.attach.auto.configure_retry_service
         Then stdout matches regexp:
         """
         NOTICES
-        Failed to automatically attach to Ubuntu Pro services 1 time\(s\).
+        auto_attach_retry_full_notice: Failed to automatically attach to Ubuntu Pro services 1 time\(s\).
         The failure was due to: an unknown error.
         The next attempt is scheduled for \d+-\d+-\d+T\d+:\d+:00.*.
         You can try manually with `sudo ua auto-attach`.
