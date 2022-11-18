@@ -98,8 +98,9 @@ def main(cfg: UAConfig):
             )
         )
         return 1
+    finally:
+        system.remove_file(AUTO_ATTACH_STATUS_MOTD_FILE)
 
-    system.remove_file(AUTO_ATTACH_STATUS_MOTD_FILE)
     return 0
 
 
